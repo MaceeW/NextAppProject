@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-
-const prisma = new PrismaClient()
 
 export async function GET(request, { params }) {
   const { id } = await params
@@ -58,8 +57,10 @@ export async function PUT(request, { params }) {
     })
     return Response.json(updated, { status: 200 })
   } catch (error) {
-    // Prisma P2025: Record to update does not exist
-    return Response.json({ error: 'Profile not found' }, { status: 404 })
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return Response.json({ error: 'Profile not found' }, { status: 404 })
+    }
+    return Response.json({ error: 'Failed to update profile' }, { status: 500 })
   }
 }
 
@@ -72,7 +73,10 @@ export async function DELETE(request, { params }) {
   try {
     await prisma.students.delete({ where: { id: parsedId } })
     return Response.json({ message: 'Profile deleted' }, { status: 200 })
-  } catch (e) {
-    return Response.json({ error: 'Profile not found' }, { status: 404 })
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return Response.json({ error: 'Profile not found' }, { status: 404 })
+    }
+    return Response.json({ error: 'Failed to delete profile' }, { status: 500 })
   }
 }
