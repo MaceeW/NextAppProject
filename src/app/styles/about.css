@@ -1,0 +1,83 @@
+
+.about-main-title {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-subtitle {
+  font-size: 1.3rem;
+  color: #666;
+  margin-bottom: 3rem;
+}
+
+.about-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-left: 5px solid #d95b5d;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.about-section-heading {
+  color: #d95b5d;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.about-highlight {
+  color: #d95b5d;
+  font-weight: bold;
+}
+
+.about-section-paragraph {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.about-features-list {
+  font-size: 1.05rem;
+  line-height: 2;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.about-tech-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  font-size: 1rem;
+}
+
+.about-tech-column h3 {
+  color: #d95b5d;
+  margin-top: 0;
+}
+
+.about-tech-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.about-getting-started {
+  font-size: 1.05rem;
+  line-height: 2;
+}
+
+.about-cta {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #d95b5d 0%, #d95b5d 100%);
+  color: white;
+  border-radius: 8px;
+  margin-top: 3rem;
+}
+
+.about-cta h3 {
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+.about-cta p {
+  font-size: 1.1rem;
+}

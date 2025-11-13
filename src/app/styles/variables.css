@@ -1,6 +1,6 @@
 :root {
   --primary-background-color: #f7f7f7;
-  --secondary-backrgound-color: #646cff;
+  --secondary-backrgound-color: #d95b5d;
   --third-background-color: #ffffff;
   --dark-background-color: #191a1a;
   --text-color: #191a1a;
@@ -10,7 +10,7 @@
   --button-hover-background-color: var(--primary-background-color);
   --button-hover-text-color: #191a1a;
   --button-border-color: #ccc;
-  --link-color: #646cff;
+  --link-color: #d95b5d;
   --link-hover-color: var(--text-color);
   /* font */
   --font-family: "Roboto", sans-serif;

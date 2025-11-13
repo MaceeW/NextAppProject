@@ -1,11 +1,15 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 async function fetchProfileData(id) {
-    const response = await fetch(`https://web.ics.purdue.edu/~zong6/profile-app/fetch-data-with-id.php?id=${id}`, {
-        next: { revalidate: 60 },
+    const profile = await prisma.profiles.findUnique({
+        where: { id: parseInt(id) },
     });
-    if (!response.ok) {
-        throw new Error('Failed to fetch profile data');
+    if (!profile) {
+        throw new Error('Profile not found');
     }
-    return response.json();
+    return profile;
 }
 
 export default async function ProfilePage({ params }) {
@@ -14,20 +18,32 @@ export default async function ProfilePage({ params }) {
 
     return (
         <main>
-        <div className="section">
-            <div className="container">
-            <h1>Profile {id}</h1>
-            <div className="bg-white shadow-md rounded-lg p-6">
-                <img src={profileData.image_url} alt={`Profile picture of ${profileData.name}`} className="rounded-full w-24 h-24 mb-4" />
-                <p className="text-gray-600 mb-2">User ID: {id}</p>
-                <div className="mb-4">
-                    <h2 className="text-xl font-semibold">Profile Information</h2>
-                    <p className="text-gray-700">Name: {profileData.name}</p>
-                    <p className="text-gray-700">Email: {profileData.email}</p>
+            <div className="section">
+                <div className="container">
+                    <h1>{profileData.name}</h1>
+                    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem', background: '#f9f9f9', borderRadius: '8px' }}>
+                        {profileData.image_url && (
+                            <img 
+                                src={profileData.image_url} 
+                                alt={`Profile picture of ${profileData.name}`}
+                                style={{ width: '200px', height: '200px', borderRadius: '50%', margin: '0 auto 2rem', display: 'block', objectFit: 'cover' }}
+                            />
+                        )}
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                            <h2 style={{ fontSize: '1rem', margin: 0, fontWeight: 'bold' }}>Title:</h2>
+                            <p style={{ margin: 0 }}>{profileData.title || 'N/A'}</p>
+                        </div>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                            <h2 style={{ fontSize: '1rem', margin: 0, fontWeight: 'bold' }}>Email:</h2>
+                            <p style={{ margin: 0 }}>{profileData.email || 'N/A'}</p>
+                        </div>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <h2 style={{ fontSize: '1rem', margin: 0, fontWeight: 'bold' }}>Bio:</h2>
+                            <p style={{ margin: 0, textAlign: 'right', maxWidth: '300px' }}>{profileData.bio || 'N/A'}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
         </main>
     );
 }
