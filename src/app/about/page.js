@@ -31,7 +31,7 @@ export default function AboutPage() {
 
                     <div className="about-cta">
                         <h3>Ready to create your profile?</h3>
-                        <p>Head over to the "Add a Profile" page and get started!</p>
+                        <p>Head over to the &quot;Add a Profile&quot; page and get started today!</p>
                     </div>
                 </div>
             </div>
