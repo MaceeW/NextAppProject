@@ -1,171 +1,86 @@
-"use client";
-import { useRef, useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
-import styles from "./AddProfile.module.css";
+import { PrismaClient } from '@prisma/client'
+import { put } from '@vercel/blob'
 
-const stripTags = (s) => String(s ?? "").replace(/<\/?[^>]+>/g, "");
-const trimCollapse = (s) =>
-  String(s ?? "")
-    .trim()
-    .replace(/\s+/g, " ");
+const prisma = new PrismaClient()
 
-export default function AddProfile() {
-  const router = useRouter();
-  const nameRef = useRef(null);
-  const [values, setValues] = useState({
-    name: "",
-    title: "",
-    email: "",
-    bio: "",
-    img: null,
-  });
-  const [errors, setErrors] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { name, title, email, bio, img } = values;
+// Ensure this route runs on the Node.js runtime (not Edge),
+// so Prisma can use a direct database connection (postgresql://)
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    if (nameRef.current) {
-      nameRef.current.focus();
+export async function GET(request) {
+    const searchParams = request.nextUrl.searchParams;
+    const name = searchParams.get("name") || "";
+    const title = searchParams.get("title") || "";
+    const profiles = await prisma.profiles.findMany();
+    let filteredProfiles = profiles;
+    if (name) {
+      filteredProfiles = filteredProfiles.filter(
+        (profile) => profile.name.toLowerCase().includes(name.toLowerCase())
+      );
     }
-  }, []);
-
-  const onChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "img") {
-      const file = files[0];
-      if (file && file.size < 1024 * 1024) {
-        // 1MB limit
-        setValues((prev) => ({ ...prev, img: files[0] }));
-      } else {
-        setErrors("Image size should be less than 1MB");
-      }
-    } else {
-      setValues((prev) => ({ ...prev, [name]: value }));
-      setErrors("");
+    if (title) {
+      filteredProfiles = filteredProfiles.filter(
+        (profile) => profile.title.toLowerCase().includes(title.toLowerCase())
+      );
     }
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrors("");
-
-    try {
-      const formData = new FormData();
-      formData.append("name", stripTags(trimCollapse(name)));
-      formData.append("title", stripTags(trimCollapse(title)));
-      formData.append("email", stripTags(trimCollapse(email)));
-      formData.append("bio", stripTags(bio).trim());
-      if (img) {
-        formData.append("img", img);
-      }
-
-      const response = await fetch("/api/profiles", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to submit form");
-      }
-
-      setSuccess("Profile added successfully!");
-      setValues({
-        name: "",
-        title: "",
-        email: "",
-        bio: "",
-        img: null,
-      });
-
-      // Reset file input
-      const fileInput = document.getElementById("img");
-      if (fileInput) fileInput.value = "";
-
-      setTimeout(() => {
-        setSuccess("");
-        router.push("/");
-      }, 2000);
-    } catch (error) {
-      setErrors(error.message || "Failed to submit form");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  return (
-    <main>
-      <div className="section">
-        <div className="container">
-          <h1>Add Profile</h1>
-          <div className={styles.addProfile}>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name:</label>
-              <input
-                ref={nameRef}
-                type="text"
-                name="name"
-                id="name"
-                required
-                value={name}
-                onChange={onChange}
-              />
-              <label htmlFor="title">Title:</label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                required
-                value={title}
-                onChange={onChange}
-              />
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                required
-                value={email}
-                onChange={onChange}
-              />
-              <label htmlFor="bio">Bio:</label>
-              <textarea
-                name="bio"
-                id="bio"
-                placeholder="Add Bio..."
-                required
-                value={bio}
-                onChange={onChange}
-              ></textarea>
-              <label htmlFor="img">Image:</label>
-              <input
-                type="file"
-                name="img"
-                id="img"
-                required
-                accept="image/png, image/jpeg, image/jpg, image/gif"
-                onChange={onChange}
-              />
-              {errors && <p className={styles.errorMessage}>{errors}</p>}
-              <button
-                type="submit"
-                disabled={
-                  isSubmitting ||
-                  !stripTags(trimCollapse(name)) ||
-                  !stripTags(trimCollapse(title)) ||
-                  !stripTags(trimCollapse(email)) ||
-                  !stripTags(bio).trim() ||
-                  !img
-                }
-              >
-                Add Profile
-              </button>
-              {success && <p className={styles.successMessage}>{success}</p>}
-            </form>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+    return Response.json({ data: filteredProfiles }, { status: 200 });
 }
+
+
+
+export async function POST(request) {
+  try {
+    const formData = await request.formData();
+    console.log("Form Data Received");
+    
+    const name = formData.get("name");
+    const title = formData.get("title");
+    const email = formData.get("email");
+    const bio = formData.get("bio");
+    const imgFile = formData.get("img");
+    
+    // Validate required fields
+    if (!name || name.trim() === "") {
+      return Response.json({ error: "Name is required" }, { status: 400 });
+    } else if (!title || title.trim() === "") {
+      return Response.json({ error: "Title is required" }, { status: 400 });
+    } else if (!email || email.trim() === "") {
+      return Response.json({ error: "Email is required" }, { status: 400 });
+    } else if (!bio || bio.trim() === "") {
+      return Response.json({ error: "Bio is required" }, { status: 400 });
+    } else if (imgFile && imgFile.size > 1024 * 1024) {
+      return Response.json({ error: "Image is required and must be less than 1MB" }, { status: 400 });
+    }
+
+    // Upload image to Vercel Blob (requires BLOB_READ_WRITE_TOKEN)
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!blobToken) {
+      return Response.json({ error: "Blob storage token not configured (BLOB_READ_WRITE_TOKEN)" }, { status: 500 });
+    }
+    const blob = await put(imgFile.name, imgFile, {
+      access: 'public',
+      token: blobToken,
+    });
+
+    // Save profile to database with Blob URL
+    const created = await prisma.profiles.create({
+      data: {
+        name: name.trim(),
+        title: title.trim(),
+        email: email.trim(),
+        bio: bio.trim(),
+        image_url: blob.url,
+      },
+    });
+    
+    return Response.json({ data: created }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating profile:", error);
+    if (error.code === 'P2002') {
+      return Response.json({ error: "Email already exists" }, { status: 400 });
+    }
+    return Response.json({ error: "Failed to create profile" }, { status: 500 });
+  }
+} 

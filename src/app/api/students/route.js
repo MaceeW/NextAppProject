@@ -1,10 +1,5 @@
-// Use the generated Prisma Client from your configured output path
-// Note: When using a custom Prisma client output, import from the 'client' entry file
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-
-// Ensure this route runs on the Node.js runtime (not Edge),
-// so Prisma can use a direct database connection (postgresql://)
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
