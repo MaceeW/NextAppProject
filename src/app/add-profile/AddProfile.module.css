@@ -1,0 +1,46 @@
+.addProfile {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px auto;
+  max-width:800px;
+}
+
+.addProfile h2 {
+  margin-top: 0;
+}
+
+.addProfile label {
+  display: block;
+  margin: 8px 0 4px;
+}
+
+.addProfile input[type="text"],
+.addProfile input[type="email"],
+.addProfile textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addProfile button {
+  margin-top: 12px;
+  display: block;
+}
+
+.addProfile button:disabled {
+  background-color: #ccc;
+  color: #000;
+  cursor: not-allowed;
+}
+
+.addProfile .successMessage {
+  color: green;
+  margin-top: 10px;
+}
+
+.addProfile .errorMessage {
+  color: red;
+  margin-top: 10px;
+}

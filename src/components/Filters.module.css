@@ -1,0 +1,22 @@
+/* Scoped styles for Filters component */
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.filterContainer label {
+  font-weight: 700;
+}
+
+.filterContainer select,
+.filterContainer input {
+  height: 2rem;
+  margin: 0.25rem 0.5rem;
+}
+
+.filterContainer button {
+  padding: 0.25rem 0.75rem;
+  margin-right: 0.5rem;
+}
