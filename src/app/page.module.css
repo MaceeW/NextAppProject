@@ -115,7 +115,6 @@ a.secondary {
   flex-shrink: 0;
 }
 
-/* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
     background-color: var(--button-hover-background-color);
@@ -177,7 +176,6 @@ a.secondary {
   }
 }
 
-/* Profile Card (CSS Module) */
 .profile-card {
   background-color: var(--primary-background-color);
   border-radius: var(--border-radius);
@@ -185,7 +183,6 @@ a.secondary {
   text-align: center;
   width: 100%;
   box-shadow: var(--box-shadow);
-  /* Remove external margin; rely on grid gap */
   margin: 0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
