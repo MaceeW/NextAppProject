@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import ProfileActions from './ProfileActions'
 
 const prisma = new PrismaClient();
 
@@ -41,6 +42,7 @@ export default async function ProfilePage({ params }) {
                             <h2 style={{ fontSize: '1rem', margin: 0, fontWeight: 'bold' }}>Bio:</h2>
                             <p style={{ margin: 0, textAlign: 'right', maxWidth: '300px' }}>{profileData.bio || 'N/A'}</p>
                         </div>
+                        <ProfileActions id={profileData.id} />
                     </div>
                 </div>
             </div>
