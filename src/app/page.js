@@ -18,26 +18,28 @@ async function getData({ title, search }) {
   const profiles = await prisma.profiles.findMany({
     where: {
       ...(title && { title: { contains: title, mode: "insensitive" } }),
-      ...(search && { name: { contains: search, mode: "insensitive" } }),
+      ...(search && {
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+        ],
+      }),
     },
   });
   return profiles;
 }
+
 export default async function Home({ searchParams }) {
-  const searchParamsData = await searchParams;
-  const selectedTitle = searchParamsData?.title || "";
-  const search = searchParamsData?.search || "";
-  const [titles, profiles] = await Promise.all([
-    fetchTitles(),
-    getData({ title: selectedTitle, search }),
-  ]);
+  const { title, search } = searchParams;
+  const titles = await fetchTitles();
+  const profiles = await getData({ title, search });
 
   return (
     <main className={styles.main}>
       <div className="section">
         <div className="container">
           <h1>Profile App </h1>
-          <Filters titles={titles} title={selectedTitle} search={search} />
+          <Filters titles={titles} title={title} search={search} />
           {profiles.length === 0 ? (
             <p>No profiles found.</p>
           ) : (
