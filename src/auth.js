@@ -4,8 +4,8 @@ import Credentials from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
 
 export const {
-  auth,     // for server components & middleware
-  handlers, // for route handlers (GET, POST)
+  auth,    
+  handlers, 
 } = NextAuth({
   providers: [
     Credentials({
