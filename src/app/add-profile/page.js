@@ -32,10 +32,9 @@ export default function AddProfile() {
 
   const onChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "img") {
+      if (name === "img") {
       const file = files[0];
       if (file && file.size < 1024 * 1024) {
-        // 1MB limit
         setValues((prev) => ({ ...prev, img: files[0] }));
       } else {
         setErrors("Image size should be less than 1MB");
@@ -80,7 +79,7 @@ export default function AddProfile() {
         img: null,
       });
 
-      // Reset file input
+      
       const fileInput = document.getElementById("img");
       if (fileInput) fileInput.value = "";
 

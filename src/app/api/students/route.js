@@ -77,7 +77,6 @@ export async function DELETE(request) {
     await prisma.students.delete({ where: { id } });
     return Response.json({ message: "Profile deleted" }, { status: 200 });
   } catch (e) {
-    // Prisma P2025: Record to delete does not exist.
     return Response.json({ error: "Profile not found" }, { status: 404 });
   }
 }

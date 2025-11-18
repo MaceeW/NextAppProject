@@ -1,0 +1,76 @@
+.authCard {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--third-background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.statusMessage {
+  color: var(--muted-text-color, #666);
+  font-size: 0.95rem;
+}
+
+.error {
+  color: var(--error-color, #c0392b);
+  font-size: 0.95rem;
+}
+
+.toggle {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.authForm label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.authForm input[type="email"],
+.authForm input[type="password"] {
+  padding: 0.7rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  font-size: 1rem;
+  outline: none;
+}
+
+.authForm input[type="email"]:focus,
+.authForm input[type="password"]:focus {
+  border-color: var(--link-color);
+  box-shadow: 0 0 0 3px rgba(217, 91, 93, 0.08); /* subtle tint */
+}
+
+.authForm button {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--link-color);
+  color: var(--button-text-color);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.authForm button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondaryButton,
+.authForm .secondaryButton {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
