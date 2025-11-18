@@ -7,6 +7,7 @@ export const {
   auth,    
   handlers, 
 } = NextAuth({
+  secret: process.env.AUTH_SECRET, // Use AUTH_SECRET from .env
   providers: [
     Credentials({
         name: "Credentials",
