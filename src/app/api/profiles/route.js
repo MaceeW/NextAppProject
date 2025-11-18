@@ -1,5 +1,6 @@
+
 import { PrismaClient } from '@prisma/client'
-import { put } from '@vercel/blob'
+import { v2 as cloudinary } from "cloudinary";
 
 const prisma = new PrismaClient()
 
@@ -54,23 +55,32 @@ export async function POST(request) {
     }
 
     
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-    if (!blobToken) {
-      return Response.json({ error: "Blob storage token not configured (BLOB_READ_WRITE_TOKEN)" }, { status: 500 });
-    }
-    const blob = await put(imgFile.name, imgFile, {
-      access: 'public',
-      token: blobToken,
+
+    // Cloudinary setup
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
+    // Read file as base64
+    const arrayBuffer = await imgFile.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const dataUri = `data:${imgFile.type};base64,${base64}`;
+    const uploadResult = await cloudinary.uploader.upload(dataUri, {
+      folder: "profiles",
+    });
+    const imageUrl = uploadResult.secure_url;
+
     
+
     const created = await prisma.profiles.create({
       data: {
         name: name.trim(),
         title: title.trim(),
         email: email.trim(),
         bio: bio.trim(),
-        image_url: blob.url,
+        image_url: imageUrl,
       },
     });
     
