@@ -18,7 +18,7 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (callbackUrl !== "/") {
-      setStatusMessage("Please sign in to continue");
+      setStatusMessage("Please log in to continue");
     }
   }, [callbackUrl]);
 
@@ -81,7 +81,7 @@ const AuthForm = () => {
 
   return (
     <div className={styles.authCard}>
-      <h1>{isLogin ? "Sign In" : "Register"}</h1>
+      <h1>{isLogin ? "Log In" : "Sign Up"}</h1>
       {statusMessage && <p className={styles.statusMessage}>{statusMessage}</p>}
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <div>
@@ -106,13 +106,13 @@ const AuthForm = () => {
         </div>
         {errors && <p className={styles.error}>{errors}</p>}
         <button type="submit" disabled={isSubmitting || !data.email || !data.password}>
-          {isSubmitting ? "Signing in..." : isLogin ? "Sign In" : "Register"}
+          {isSubmitting ? (isLogin ? "Logging in..." : "Signing up...") : isLogin ? "Log In" : "Sign Up"}
         </button>
       </form>
       <div className={styles.toggle}>
         <p>{isLogin ? "Don't have an account?" : "Already have an account?"}</p>
         <button type="button" onClick={handleToggle} className={styles.secondaryButton}>
-          {isLogin ? "Register" : "Sign In"}
+          {isLogin ? "Sign Up" : "Log In"}
         </button>
       </div>
     </div>

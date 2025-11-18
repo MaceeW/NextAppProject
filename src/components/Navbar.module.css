@@ -52,7 +52,7 @@
 
 .signInLink {
   font-weight: 600;
-  color: var(--link-color, inherit);
+  color: var(--button-text-color, #ffffff);
   text-decoration: none;
 }
 

@@ -35,7 +35,7 @@ export default function Navbar() {
           </>
         ) : (
           <Link href="/auth/signin" className={styles.signInLink}>
-            Sign In
+            Log In/Sign Up
           </Link>
         )}
       </div>
