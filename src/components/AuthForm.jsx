@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import styles from "./AuthForm.module.css"; //add your stylesheet
+import styles from "./AuthForm.module.css";
 
 const stripTags = (s) => String(s ?? "").replace(/<\/?[^>]+>/g, "");
 
@@ -109,6 +109,23 @@ const AuthForm = () => {
           {isSubmitting ? (isLogin ? "Logging in..." : "Signing up...") : isLogin ? "Log In" : "Sign Up"}
         </button>
       </form>
+      <div className={styles.divider}>
+        <span>or</span>
+      </div>
+      <button
+        type="button"
+        onClick={() => signIn("google", { callbackUrl })}
+        className={styles.googleButton}
+      >
+        Sign in with Google
+      </button>
+      <button
+        type="button"
+        onClick={() => signIn("github", { callbackUrl })}
+        className={styles.githubButton}
+      >
+        Sign in with GitHub
+      </button>
       <div className={styles.toggle}>
         <p>{isLogin ? "Don't have an account?" : "Already have an account?"}</p>
         <button type="button" onClick={handleToggle} className={styles.secondaryButton}>

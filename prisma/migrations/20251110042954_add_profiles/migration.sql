@@ -1,4 +1,3 @@
--- CreateTable
 CREATE TABLE "Profiles" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -12,5 +11,4 @@ CREATE TABLE "Profiles" (
     CONSTRAINT "Profiles_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
 CREATE UNIQUE INDEX "Profiles_email_key" ON "Profiles"("email");

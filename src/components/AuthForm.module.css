@@ -50,7 +50,7 @@
 .authForm input[type="email"]:focus,
 .authForm input[type="password"]:focus {
   border-color: var(--link-color);
-  box-shadow: 0 0 0 3px rgba(217, 91, 93, 0.08); /* subtle tint */
+  box-shadow: 0 0 0 3px rgba(217, 91, 93, 0.08); 
 }
 
 .authForm button {
@@ -73,4 +73,57 @@
   background: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-color);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  color: var(--muted-text-color, #666);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.divider span {
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.googleButton {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.googleButton:hover {
+  background: var(--secondary-background-color, #f5f5f5);
+  border-color: var(--link-color);
+}
+
+.githubButton {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.githubButton:hover {
+  background: var(--secondary-background-color, #f5f5f5);
+  border-color: var(--link-color);
 }

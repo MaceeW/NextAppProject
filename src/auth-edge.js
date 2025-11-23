@@ -13,7 +13,7 @@ export const { auth } = NextAuth({
         path.startsWith("/add-profile") ||
         (path.startsWith("/profile/") && path.endsWith("/edit"));
       if (isProtectedRoute && !isLoggedIn) {
-        return false; // Redirect to sign-in page
+        return false;
       }
       return true;
     },

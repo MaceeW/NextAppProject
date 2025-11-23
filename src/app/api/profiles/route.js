@@ -56,16 +56,13 @@ export async function POST(request) {
 
     
 
-    // Cloudinary setup: prefer CLOUDINARY_URL, otherwise require individual vars
     try {
       if (process.env.CLOUDINARY_URL) {
-        // CLOUDINARY_URL format: cloudinary://api_key:api_secret@cloud_name
         const m = process.env.CLOUDINARY_URL.match(/^cloudinary:\/\/(.*?):(.*?)@(.*)$/);
         if (m) {
           const [, key, secret, name] = m;
           cloudinary.config({ cloud_name: name, api_key: key, api_secret: secret });
         } else {
-          // Fallback to letting the SDK read CLOUDINARY_URL env var
           cloudinary.config();
         }
       } else if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
@@ -82,7 +79,7 @@ export async function POST(request) {
       throw cfgErr;
     }
 
-    // Read file as base64
+    
     const arrayBuffer = await imgFile.arrayBuffer();
     const base64 = Buffer.from(arrayBuffer).toString("base64");
     const dataUri = `data:${imgFile.type};base64,${base64}`;

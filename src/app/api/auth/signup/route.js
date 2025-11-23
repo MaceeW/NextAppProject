@@ -5,8 +5,6 @@ export const runtime = "nodejs";
 export async function POST(request) {
   const { email, password } = await request.json();
 
-  
-
   if (!email || !password) {
     return Response.json({ error: "Missing email or password" }, { status: 400 });
   }

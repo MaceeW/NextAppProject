@@ -78,7 +78,6 @@ export default function AddProfile() {
         bio: "",
         img: null,
       });
-
       
       const fileInput = document.getElementById("img");
       if (fileInput) fileInput.value = "";

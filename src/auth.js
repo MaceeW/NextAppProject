@@ -1,14 +1,24 @@
 import NextAuth from "next-auth";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
 import prisma from "@/lib/prisma";
 
 export const {
   auth,    
   handlers, 
 } = NextAuth({
-  secret: process.env.AUTH_SECRET, // Use AUTH_SECRET from .env
+  secret: process.env.AUTH_SECRET, 
   providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+    }),
     Credentials({
         name: "Credentials",
             credentials: {
@@ -51,7 +61,7 @@ export const {
       const isProtectedRoute = path.startsWith('/add-profile') || 
                               (path.startsWith('/profile/') && path.endsWith('/edit'));
       if (isProtectedRoute && !isLoggedIn) {
-        return false; // Redirect to sign-in page
+        return false;
       }
       return true;
     },
